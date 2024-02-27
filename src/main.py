@@ -3,7 +3,8 @@ import logging
 import requests
 import json
 import time
-
+import os
+from dotenv import load_dotenv
 
 class App:
     def __init__(self):
@@ -11,11 +12,13 @@ class App:
         self.TICKS = 10
 
         # To be configured by your team
-        self.HOST = None  # Setup your host here
-        self.TOKEN = None  # Setup your token here
-        self.T_MAX = None  # Setup your max temperature here
-        self.T_MIN = None  # Setup your min temperature here
-        self.DATABASE_URL = None  # Setup your database here
+        load_dotenv()
+        print(os.environ.get('HOST'), os.environ.get('TOKEN'), os.environ.get('T_MAX'), os.environ.get('T_MIN'), os.environ.get('DATABASE_URL'))
+        self.HOST = os.getenv('HOST')
+        self.TOKEN = os.getenv('TOKEN')
+        self.T_MAX = os.getenv('T_MAX')
+        self.T_MIN = os.getenv('T_MIN')
+        self.DATABASE_URL = os.getenv('DATABASE_URL')
 
     def __del__(self):
         if self._hub_connection != None:
@@ -80,10 +83,10 @@ class App:
         """Save sensor data into database."""
         try:
             # To implement
-            pass
+            print('asdf {}, {}'.format(timestamp, temperature))
         except requests.exceptions.RequestException as e:
             # To implement
-            pass
+            print('Error saving into db...')
 
 
 if __name__ == "__main__":
