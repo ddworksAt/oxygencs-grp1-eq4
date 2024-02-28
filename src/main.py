@@ -15,7 +15,6 @@ class App:
 
         # To be configured by your team
         load_dotenv()
-        print(os.environ.get('HOST'), os.environ.get('TOKEN'), os.environ.get('T_MAX'), os.environ.get('T_MIN'), os.environ.get('DATABASE_URL'))
         self.HOST = os.getenv('HOST')
         self.TOKEN = os.getenv('TOKEN')
         self.T_MAX = os.getenv('T_MAX')
