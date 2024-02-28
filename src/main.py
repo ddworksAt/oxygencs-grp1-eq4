@@ -67,35 +67,42 @@ class App:
             print(data[0]["date"] + " --> " + data[0]["data"], flush=True)
             timestamp = data[0]["date"]
             temperature = float(data[0]["data"])
-            self.take_action(temperature)
-            self.save_event_to_database(timestamp, temperature)
+            action = self.take_action(temperature)
+            self.save_event_to_database(timestamp, temperature, action)
         except Exception as err:
             print(err)
 
     def take_action(self, temperature):
         """Take action to HVAC depending on current temperature."""
         if float(temperature) >= float(self.T_MAX):
-            self.send_action_to_hvac("TurnOnAc")
+            return self.send_action_to_hvac("TurnOnAc")
         elif float(temperature) <= float(self.T_MIN):
-            self.send_action_to_hvac("TurnOnHeater")
+            return self.send_action_to_hvac("TurnOnHeater")
+        else:
+            return None
 
     def send_action_to_hvac(self, action):
         """Send action query to the HVAC service."""
         r = requests.get(f"{self.HOST}/api/hvac/{self.TOKEN}/{action}/{self.TICKS}")
         details = json.loads(r.text)
         print(details, flush=True)
+        return details["Response"]
 
-    def save_event_to_database(self, timestamp, temperature):
+    def save_event_to_database(self, timestamp, temperature, action):
         """Save sensor data into database."""
         try:
             conn = self.get_connection()
             cursor = conn.cursor()
 
             cursor.execute('INSERT INTO temperatures (temperature, "createdAt") VALUES (%s, %s)', (temperature, timestamp))
+            print('Inserted {}, {} in the table temperatures...'.format(temperature, timestamp))
+
+            if (action):
+                cursor.execute('INSERT INTO events (event, "createdAt") VALUES (%s, %s)', (action, timestamp))
+                print('Inserted {}, {} in the table events...'.format(action, timestamp))
             
             conn.commit()
             cursor.close()
-            print('Inserted {}, {} in the database...'.format(timestamp, temperature))
         except requests.exceptions.RequestException as e:
             print('Error saving into db: {}'.format(e))
         finally:
