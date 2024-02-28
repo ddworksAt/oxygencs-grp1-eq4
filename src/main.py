@@ -4,6 +4,8 @@ import requests
 import json
 import time
 import os
+import psycopg2
+from psycopg2 import pool
 from dotenv import load_dotenv
 
 class App:
@@ -19,6 +21,10 @@ class App:
         self.T_MAX = os.getenv('T_MAX')
         self.T_MIN = os.getenv('T_MIN')
         self.DATABASE_URL = os.getenv('DATABASE_URL')
+        self.MIN_CONN = os.getenv('MIN_CONN')
+        self.MAX_CONN = os.getenv('MAX_CONN')
+
+        self.connection_pool = psycopg2.pool.SimpleConnectionPool(minconn = self.MIN_CONN, maxconn = self.MAX_CONN, dsn = self.DATABASE_URL)
 
     def __del__(self):
         if self._hub_connection != None:
@@ -82,12 +88,26 @@ class App:
     def save_event_to_database(self, timestamp, temperature):
         """Save sensor data into database."""
         try:
-            # To implement
-            print('asdf {}, {}'.format(timestamp, temperature))
-        except requests.exceptions.RequestException as e:
-            # To implement
-            print('Error saving into db...')
+            conn = self.get_connection()
+            cursor = conn.cursor()
 
+            cursor.execute('INSERT INTO temperatures (temperature, "createdAt") VALUES (%s, %s)', (temperature, timestamp))
+            
+            conn.commit()
+            cursor.close()
+            print('Inserted {}, {} in the database...'.format(timestamp, temperature))
+        except requests.exceptions.RequestException as e:
+            print('Error saving into db: {}'.format(e))
+        finally:
+            self.put_connection(conn)
+
+    def get_connection(self):
+        # Get a db connection from the pool
+        return self.connection_pool.getconn()
+    
+    def put_connection(self, conn):
+        # Put a db connection back into the pool
+        self.connection_pool.putconn(conn)
 
 if __name__ == "__main__":
     app = App()
