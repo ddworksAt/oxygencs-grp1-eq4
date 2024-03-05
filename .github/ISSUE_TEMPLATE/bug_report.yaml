@@ -1,0 +1,30 @@
+name: Bug Report
+title: "[BUG] title"
+description: File a bug/issue.
+labels: ["bug"]
+assignees: ["ddworksAt"]
+projects: ["ddworksAt/3"]
+body:
+- type: textarea
+  attributes:
+    label: Current Behavior
+    description: Describe the bug/issue that you are experiencing.
+  validations:
+    required: false
+- type: textarea
+  attributes:
+    label: Expected Behavior
+    description: Provide the steps and the result that you were expecting to happen.
+  validations:
+    required: false
+- type: textarea
+  attributes:
+    label: Steps To Reproduce
+    description: Provide the steps to reproduce the issue.
+    placeholder: |
+      1. In this environment...
+      1. With this config...
+      1. Run '...'
+      1. See error...
+  validations:
+    required: false

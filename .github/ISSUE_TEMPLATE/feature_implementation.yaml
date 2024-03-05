@@ -1,0 +1,19 @@
+name: Feature Request
+title: "[FR] title"
+description: Open a request to add new functionalities to the project.
+labels: ["implementation"]
+assignees: ["ddworksAt"]
+projects: ["ddworksAt/3"]
+body:
+- type: textarea
+  attributes:
+    label: Add a description
+    description: Describe the new functionalities to implement.
+  validations:
+    required: false
+- type: textarea
+  attributes:
+    label: Additional context
+    description: Add any other context/requirements about the feature request here.
+  validations:
+    required: false
