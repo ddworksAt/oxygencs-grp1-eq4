@@ -19,6 +19,7 @@ class TestApp(unittest.TestCase):
         self.app.connection_pool.getconn = MagicMock(return_value=MagicMock())
         self.app.connection_pool.putconn = MagicMock()
 
+    # Test connection to the database
     def test_db_connection(self):
         try:
             conn = psycopg2.connect(self.app.DATABASE_URL)
@@ -27,6 +28,7 @@ class TestApp(unittest.TestCase):
         except:
             self.fail("Database connection failed")
 
+    # Test that on_sensor_data_received calls the appropriate functions
     def test_on_sensor_data_received(self):
         self.app.take_action = MagicMock()
         self.app.save_event_to_database = MagicMock()
@@ -35,8 +37,9 @@ class TestApp(unittest.TestCase):
         self.app.take_action.assert_called_once
         self.app.save_event_to_database.assert_called_once
 
+    # Test that take_action returns the string value or None
     def test_take_action(self):
-        # self.assertEqual(self.app.take_action(self.app.T_MIN - 1), "Activating Heater for 10 ticks")
+        self.assertEqual(self.app.take_action(float(self.app.T_MIN) - 1), "Activating Heater for 10 ticks")
         self.assertEqual(self.app.take_action(float(self.app.T_MIN)), "Activating Heater for 10 ticks")
         self.assertEqual(self.app.take_action(float(self.app.T_MIN) + 0.1), None)
         self.assertEqual(self.app.take_action(float(self.app.T_MIN) + 1), None)
@@ -44,7 +47,8 @@ class TestApp(unittest.TestCase):
         self.assertEqual(self.app.take_action(float(self.app.T_MAX)), "Activating AC for 10 ticks")
         self.assertEqual(self.app.take_action(float(self.app.T_MAX) + 1), "Activating AC for 10 ticks")
 
-    def test_save_event_to_database(self):
+    # Test scenarios for saving hvac temperatures or events to the database
+    def test_save_hvac_to_database(self):
         self.app.get_connection = MagicMock(return_value=MagicMock())
         self.app.put_connection = MagicMock()
 
