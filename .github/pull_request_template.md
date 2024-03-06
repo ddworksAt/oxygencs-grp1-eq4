@@ -7,4 +7,4 @@ Explain the content of your commits, the files created, the functionalities impl
 
 Closes #
 
-### Do not forget to add everyone as reviewers and assignees, and add the label, the project and the milestone.
+### Do not forget to add everyone as reviewers and assignees, as well as add the label, the project and the milestone.
