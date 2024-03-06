@@ -84,7 +84,7 @@ class App:
         """Send action query to the HVAC service."""
         r = requests.get(f"{self.HOST}/api/hvac/{self.TOKEN}/{action}/{self.TICKS}")
         details = json.loads(r.text)
-        print(details, flush=True)
+        # print(details, flush=True)
         return details["Response"]
 
     def save_event_to_database(self, timestamp, temperature, action):
@@ -94,15 +94,17 @@ class App:
             cursor = conn.cursor()
 
             cursor.execute('INSERT INTO temperatures (temperature, "createdAt") VALUES (%s, %s)', (temperature, timestamp))
-            print('Inserted {}, {} in the table temperatures...'.format(temperature, timestamp))
+            print(' # Inserted {}, {} in the table temperatures...'.format(temperature, timestamp))
 
             if (action):
                 cursor.execute('INSERT INTO events (event, "createdAt") VALUES (%s, %s)', (action, timestamp))
-                print('Inserted {}, {} in the table events...'.format(action, timestamp))
+                print(' # Inserted {}, {} in the table events...'.format(action, timestamp))
+
+            print()
             
             conn.commit()
             cursor.close()
-        except requests.exceptions.RequestException as e:
+        except psycopg2.Error as e:
             print('Error saving into db: {}'.format(e))
         finally:
             self.put_connection(conn)
