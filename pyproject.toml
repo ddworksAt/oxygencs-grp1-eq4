@@ -1,0 +1,4 @@
+# pyproject.toml
+[tool.black]
+# Ligne maximale de largeur pour le formatage (par défaut: 88)
+line-length = 100
