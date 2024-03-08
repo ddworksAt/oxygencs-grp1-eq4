@@ -19,7 +19,7 @@ suggestion-mode=yes
 confidence=HIGH
 
 # Disable a warning with the given message identifier(s).
-disable=
+disable=C0114,C0115,C0103
 
 # Set the output format. Available formats are text, parseable, colorized, json
 # and msvs (visual studio).

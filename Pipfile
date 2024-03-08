@@ -10,6 +10,7 @@ python-dotenv = "*"
 psycopg2 = "*"
 pylint = "*"
 black = "*"
+pre-commit = "*"
 
 [dev-packages]
 
