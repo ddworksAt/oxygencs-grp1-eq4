@@ -18,6 +18,7 @@ class App:
         load_dotenv()
         self.HOST = os.getenv("HOST")
         self.TOKEN = os.getenv("TOKEN")
+
         self.T_MIN = os.getenv("T_MIN")
         self.T_MAX = os.getenv("T_MAX")
         self.DATABASE_URL = os.getenv("DATABASE_URL")
