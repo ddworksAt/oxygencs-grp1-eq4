@@ -1,4 +1,16 @@
 repos:
+  - repo: local
+    hooks:
+      - id: run-tests
+        name: Run Tests
+        entry: pipenv run test
+        language: system
+        files: src/
+      - id: run-bash
+        name: Run Bash
+        entry: pipenv run black .
+        language: system
+        files: src/
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.0.0
     hooks:
@@ -11,16 +23,4 @@ repos:
     hooks:
       - id: pylint
         args: ["--rcfile=.pylintrc"]
-        files: src/
-  - repo: local
-    hooks:
-      - id: run-tests
-        name: Run Tests
-        entry: pipenv run test
-        language: system
-        files: src/
-      - id: run-bash
-        name: Run Bash
-        entry: pipenv run black .
-        language: system
         files: src/
