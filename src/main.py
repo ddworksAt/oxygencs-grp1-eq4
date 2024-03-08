@@ -43,7 +43,8 @@ class App:
     def setup_sensor_hub(self):
         """Configure hub connection and subscribe to sensor data events."""
         self._hub_connection = (
-            HubConnectionBuilder().with_url(f"{self.HOST}/SensorHub?token={self.TOKEN}")
+            HubConnectionBuilder()
+            .with_url(f"{self.HOST}/SensorHub?token={self.TOKEN}")
             .configure_logging(logging.INFO)
             .with_automatic_reconnect(
                 {

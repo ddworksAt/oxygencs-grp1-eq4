@@ -19,3 +19,8 @@ repos:
         entry: pipenv run test
         language: system
         files: src/
+      - id: run-bash
+        name: Run Bash
+        entry: pipenv run black .
+        language: system
+        files: src/
