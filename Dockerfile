@@ -5,10 +5,7 @@ WORKDIR /app
 # Copy the necessary files
 COPY src/ /app/src/
 COPY test/ /app/test/
-COPY Pipfile Pipfile.lock /app/
-
-# Install dependencies
-RUN pip install pipenv && pipenv install --deploy --ignore-pipfile
+COPY Pipfile /app/
 
 # Define environment variables
 ENV HOST="http://159.203.50.162"
@@ -19,5 +16,5 @@ ENV DATABASE_URL="postgresql://user01eq4:lyimRoKqSg7hHgc1@157.230.69.113:5432/db
 ENV MIN_CONN="1"
 ENV MAX_CONN="10"
 
-# Command to execute the script
-CMD ["pipenv", "run", "start"]
+# Command to install dependencies and execute the script
+CMD ["sh", "-c", "pip install pipenv && pipenv install --deploy --ignore-pipfile && pipenv run start"]
