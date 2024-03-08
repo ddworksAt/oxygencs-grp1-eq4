@@ -8,6 +8,8 @@ requests = "*"
 signalrcore = "*"
 python-dotenv = "*"
 psycopg2 = "*"
+pylint = "*"
+black = "*"
 
 [dev-packages]
 
