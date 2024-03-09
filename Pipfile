@@ -7,7 +7,7 @@ name = "pypi"
 requests = "*"
 signalrcore = "*"
 python-dotenv = "*"
-psycopg2 = "*"
+psycopg2-binary = "*"
 pylint = "*"
 black = "*"
 pre-commit = "*"
@@ -15,7 +15,7 @@ pre-commit = "*"
 [dev-packages]
 
 [requires]
-python_version = "3.8"
+python_version = "3.10"
 
 [scripts]
 start = "python src/main.py"
