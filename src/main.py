@@ -8,6 +8,7 @@ import psycopg2
 from psycopg2 import pool
 from dotenv import load_dotenv
 
+
 class App:
     def __init__(self):
         self._hub_connection = None
@@ -15,15 +16,18 @@ class App:
 
         # To be configured by your team
         load_dotenv()
-        self.HOST = os.getenv('HOST')
-        self.TOKEN = os.getenv('TOKEN')
-        self.T_MIN = os.getenv('T_MIN')
-        self.T_MAX = os.getenv('T_MAX')
-        self.DATABASE_URL = os.getenv('DATABASE_URL')
-        self.MIN_CONN = os.getenv('MIN_CONN')
-        self.MAX_CONN = os.getenv('MAX_CONN')
+        self.HOST = os.getenv("HOST")
+        self.TOKEN = os.getenv("TOKEN")
 
-        self.connection_pool = psycopg2.pool.SimpleConnectionPool(minconn = self.MIN_CONN, maxconn = self.MAX_CONN, dsn = self.DATABASE_URL)
+        self.T_MIN = os.getenv("T_MIN")
+        self.T_MAX = os.getenv("T_MAX")
+        self.DATABASE_URL = os.getenv("DATABASE_URL")
+        self.MIN_CONN = os.getenv("MIN_CONN")
+        self.MAX_CONN = os.getenv("MAX_CONN")
+
+        self.connection_pool = psycopg2.pool.SimpleConnectionPool(
+            minconn=self.MIN_CONN, maxconn=self.MAX_CONN, dsn=self.DATABASE_URL
+        )
 
     def __del__(self):
         if self._hub_connection != None:
@@ -93,29 +97,36 @@ class App:
             conn = self.get_connection()
             cursor = conn.cursor()
 
-            cursor.execute('INSERT INTO temperatures (temperature, "createdAt") VALUES (%s, %s)', (temperature, timestamp))
-            print(' # Inserted {}, {} in the table temperatures...'.format(temperature, timestamp))
+            cursor.execute(
+                'INSERT INTO temperatures (temperature, "createdAt") VALUES (%s, %s)',
+                (temperature, timestamp),
+            )
+            print(" # Inserted {}, {} in the table temperatures...".format(temperature, timestamp))
 
-            if (action):
-                cursor.execute('INSERT INTO events (event, "createdAt") VALUES (%s, %s)', (action, timestamp))
-                print(' # Inserted {}, {} in the table events...'.format(action, timestamp))
+            if action:
+                cursor.execute(
+                    'INSERT INTO events (event, "createdAt") VALUES (%s, %s)',
+                    (action, timestamp),
+                )
+                print(" # Inserted {}, {} in the table events...".format(action, timestamp))
 
             print()
-            
+
             conn.commit()
             cursor.close()
         except psycopg2.Error as e:
-            print('Error saving into db: {}'.format(e))
+            print("Error saving into db: {}".format(e))
         finally:
             self.put_connection(conn)
 
     def get_connection(self):
         # Get a db connection from the pool
         return self.connection_pool.getconn()
-    
+
     def put_connection(self, conn):
         # Put a db connection back into the pool
         self.connection_pool.putconn(conn)
+
 
 if __name__ == "__main__":
     app = App()
