@@ -1,0 +1,38 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches:
+      - FR-integration-continue
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies
+        run: |
+          pip install pipenv
+          pipenv install --dev
+
+      - name: Set up environment variables
+        run: |
+          echo "HOST=${{ vars.HOST }}" >> .env
+          echo "TOKEN=${{ vars.TOKEN }}" >> .env
+          echo "T_MAX=${{ vars.T_MAX }}" >> .env
+          echo "T_MIN=${{ vars.T_MIN }}" >> .env
+          echo "DATABASE_URL=${{ vars.DATABASE_URL }}" >> .env
+          echo "MIN_CONN=${{ vars.MIN_CONN }}" >> .env
+          echo "MAX_CONN=${{ vars.MAX_CONN }}" >> .env
+
+      - name: Run tests
+        run: pipenv run test
