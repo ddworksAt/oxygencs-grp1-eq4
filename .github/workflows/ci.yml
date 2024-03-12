@@ -1,39 +1,21 @@
-name: Continuous Integration
+name: Simple Workflow
 
 on:
   push:
     branches:
-      - '*'
+      - main
 
 jobs:
-  test:
-    name: Run Tests
+  simple_job:
+    name: Run Simple Job
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
+      - name: Print current directory
+        run: pwd
 
-      - name: Install dependencies
-        run: |
-          pip install pipenv
-          pipenv install --dev
-
-      - name: Set up environment variables
-        run: |
-          echo "HOST=${{ vars.HOST }}" >> .env
-          echo "TOKEN=${{ vars.TOKEN }}" >> .env
-          echo "T_MAX=${{ vars.T_MAX }}" >> .env
-          echo "T_MIN=${{ vars.T_MIN }}" >> .env
-          echo "DATABASE_URL=${{ vars.DATABASE_URL }}" >> .env
-          echo "MIN_CONN=${{ vars.MIN_CONN }}" >> .env
-          echo "MAX_CONN=${{ vars.MAX_CONN }}" >> .env
-
-      - name: Run tests
-        run: pipenv run test
-        #################
+      - name: List files in repository
+        run: ls -a
