@@ -26,13 +26,13 @@ jobs:
 
       - name: Set up environment variables
         run: |
-          echo "HOST=${{ env.HOST }}" >> .env
-          echo "TOKEN=${{ env.TOKEN }}" >> .env
-          echo "T_MAX=${{ env.T_MAX }}" >> .env
-          echo "T_MIN=${{ env.T_MIN }}" >> .env
-          echo "DATABASE_URL=${{ env.DATABASE_URL }}" >> .env
-          echo "MIN_CONN=${{ env.MIN_CONN }}" >> .env
-          echo "MAX_CONN=${{ env.MAX_CONN }}" >> .env
+          echo "HOST=${{ secrets.HOST }}" >> .env
+          echo "TOKEN=${{ secrets.TOKEN }}" >> .env
+          echo "T_MAX=${{ secrets.T_MAX }}" >> .env
+          echo "T_MIN=${{ secrets.T_MIN }}" >> .env
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+          echo "MIN_CONN=${{ secrets.MIN_CONN }}" >> .env
+          echo "MAX_CONN=${{ secrets.MAX_CONN }}" >> .env
 
       - name: Run tests
         run: pipenv run test
