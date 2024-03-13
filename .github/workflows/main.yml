@@ -1,34 +1,28 @@
 name: Continuous Integration
 
-
 on:
   push:
     branches:
       - '*'
-
 
 jobs:
   test:
     name: Run Tests
     runs-on: ubuntu-latest
 
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
 
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: 3.8
 
-
       - name: Install dependencies
         run: |
           pip install pipenv
           pipenv install --dev
-
 
       - name: Set up environment variables
         run: |
@@ -39,7 +33,6 @@ jobs:
           echo "DATABASE_URL=${{ env.DATABASE_URL }}" >> .env
           echo "MIN_CONN=${{ env.MIN_CONN }}" >> .env
           echo "MAX_CONN=${{ env.MAX_CONN }}" >> .env
-
 
       - name: Run tests
         run: pipenv run test
