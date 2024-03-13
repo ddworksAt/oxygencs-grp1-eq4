@@ -1,4 +1,4 @@
-# LOG-680 : Oxygen-CS-GTP1-EQ4
+# LOG-680 : OxygenCS-GTP1-EQ4
 Cette application Python surveille en permanence un hub de capteurs et gère les actions du système CVC (chauffage, ventilation et climatisation) en fonction des données de capteur reçues.
 
 Il exploite « signalrcore » pour maintenir une connexion en temps réel au hub de capteurs et utilise des « requêtes » pour envoyer des requêtes GET à un point final de contrôle CVC distant. Les données recueillies sont enregistrées dans une base de données PostgreSQL dont l'URL de connexion doit être spécifié.
@@ -26,7 +26,7 @@ Activer l'environnement virtuel:
 pipenv shell
 ```
 
-Installer les dépendances et mettre à jour Pipfile.lock:
+Installer les dépendances essentielles au fonctionnement de l'application et mettre à jour Pipfile.lock:
 ```bash
 pipenv install
 ```
@@ -36,7 +36,12 @@ Après les configurations, vous pouvez rouler l'application (si celui-ci échoue
 pipenv run start
 ```
 
-Rouler les tests:
+Installer les dépendances essentielles au fonctionnement de l'application ET pour le développement (tests, analyse de code, formattage et *pre-commit*):
+```bash
+pipenv install --dev
+```
+
+Rouler les tests (nécessite les dépendances de développement en plus des dépendances essentielles à l'application):
 ```bash
 pipenv run test
 ```
@@ -46,3 +51,5 @@ MIT
 
 ## Documentation
 [Connexion à PostgreSQL et données](Wiki/lab2/PostgreSQL.md)
+
+[Intégration continue](Wiki/lab2/IntegrationContinue.md)

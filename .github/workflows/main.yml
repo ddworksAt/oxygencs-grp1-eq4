@@ -1,0 +1,87 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches:
+      - '*'
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies
+        run: |
+          pip install pipenv
+          pipenv install --dev
+
+      - name: Set up environment variables
+        run: |
+          echo "HOST=${{ secrets.HOST }}" >> .env
+          echo "TOKEN=${{ secrets.TOKEN }}" >> .env
+          echo "T_MAX=${{ secrets.T_MAX }}" >> .env
+          echo "T_MIN=${{ secrets.T_MIN }}" >> .env
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+          echo "MIN_CONN=${{ secrets.MIN_CONN }}" >> .env
+          echo "MAX_CONN=${{ secrets.MAX_CONN }}" >> .env
+
+      - name: Run tests
+        run: pipenv run test
+
+  format:
+    name: Code Analysis and Formatting
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies
+        run: |
+          pip install pipenv
+          pipenv install --dev
+
+      - name: Run pylint for code analysis
+        run: pipenv run pylint --rcfile=.pylintrc src/*
+          
+      - name: Run black for code formatting
+        run: pipenv run black .
+
+  build-and-deploy:
+    name: Build and Deploy Docker images
+    runs-on: ubuntu-latest
+    needs: format
+    if: github.ref == 'refs/heads/integration-continue' && github.event_name == 'push'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Build Docker image
+      run: docker build -t ddworksat/oxygencs-grp1-eq4:latest -t ddworksat/oxygencs-grp1-eq4:${GITHUB_RUN_NUMBER} .
+      
+    - name: Push Docker image
+      run: |
+        docker push ddworksat/oxygencs-grp1-eq4:latest
+        docker push ddworksat/oxygencs-grp1-eq4:${GITHUB_RUN_NUMBER}
