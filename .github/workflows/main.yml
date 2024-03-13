@@ -36,3 +36,27 @@ jobs:
 
       - name: Run tests
         run: pipenv run test
+
+  format:
+    name: Code Analysis and Formatting
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies
+        run: |
+          pip install pipenv
+
+      - name: Run pylint for code analysis
+        run: pipenv run pylint --rcfile=.pylintrc src/*
+          
+      - name: Run black for code formatting
+        run: pipenv run black .
