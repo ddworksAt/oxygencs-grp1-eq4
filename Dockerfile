@@ -4,8 +4,10 @@ WORKDIR /app
 
 # Copy the necessary files
 COPY src/ /app/src/
-COPY test/ /app/test/
 COPY Pipfile /app/
+
+# Install the necess
+RUN pip install pipenv && pipenv install --deploy --ignore-pipfile
 
 # Define environment variables
 ENV HOST="http://159.203.50.162"
@@ -17,4 +19,4 @@ ENV MIN_CONN="1"
 ENV MAX_CONN="10"
 
 # Command to install dependencies and execute the script
-CMD ["sh", "-c", "pip install pipenv && pipenv install --deploy --ignore-pipfile && pipenv run start"]
+CMD ["sh", "-c", "pipenv run start"]
