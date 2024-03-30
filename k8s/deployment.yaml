@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oxygencs-deployment
+  labels:
+    app: oxygencs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oxygencs
+  template:
+    metadata:
+      labels:
+        app: oxygencs
+    spec:
+      containers:
+      - name: oxygencs-container
+        image: ddworksat/oxygencs-grp1-eq4:latest
+        ports:
+        - containerPort: 80
+        envFrom:
+        - secretRef:
+            name: oxygencs-secrets # This name matches the name in your secret.yaml
+        - configMapRef:
+            name: oxygen-config # config
