@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: oxygencs-deployment
+  name: oxygencs
   labels:
     app: oxygencs
 spec:
@@ -17,10 +17,15 @@ spec:
       containers:
       - name: oxygencs-container
         image: ddworksat/oxygencs-grp1-eq4:latest
-        ports:
-        - containerPort: 80
         envFrom:
         - secretRef:
-            name: oxygencs-secrets # This name matches the name in your secret.yaml
+            name: oxygencs-secrets
         - configMapRef:
-            name: oxygen-config # config
+            name: oxygencs-configmap
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
