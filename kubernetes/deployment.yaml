@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oxygencs
+  labels:
+    app: oxygencs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oxygencs
+  template:
+    metadata:
+      labels:
+        app: oxygencs
+    spec:
+      containers:
+      - name: oxygencs-container
+        image: ddworksat/oxygencs-grp1-eq4:latest
+        envFrom:
+        - secretRef:
+            name: oxygencs-secrets
+        - configMapRef:
+            name: oxygencs-configmap
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
