@@ -120,7 +120,6 @@ class App:
 
     def get_connection(self):
         # Get a db connection from the pool
-        # test
         return self.connection_pool.getconn()
 
     def put_connection(self, conn):
