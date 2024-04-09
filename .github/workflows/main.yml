@@ -85,3 +85,15 @@ jobs:
       run: |
         docker push ddworksat/oxygencs-grp1-eq4:latest
         docker push ddworksat/oxygencs-grp1-eq4:${GITHUB_RUN_NUMBER}
+        
+    - name: Create kubeconfig
+      run: |
+        mkdir ${HOME}/.kube
+        echo ${{ secrets.KUBE_CONFIG }} | base64 --decode > ${HOME}/.kube/config
+        cat ${HOME}/.kube/config
+        
+    - name: Use context
+      run: kubectl config use-context do-tor1-log680-k8s-cluster
+
+    - name: Deploy to K8s
+      run: kubectl apply -f kubernetes/

@@ -17,6 +17,7 @@ spec:
       containers:
       - name: oxygencs-container
         image: ddworksat/oxygencs-grp1-eq4:latest
+        imagePullPolicy: Always
         envFrom:
         - secretRef:
             name: oxygencs-secrets
