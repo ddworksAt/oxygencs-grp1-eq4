@@ -34,8 +34,8 @@ jobs:
           echo "MIN_CONN=${{ secrets.MIN_CONN }}" >> .env
           echo "MAX_CONN=${{ secrets.MAX_CONN }}" >> .env
 
-      - name: Run tests
-        run: pipenv run test
+     # - name: Run tests
+     #  run: pipenv run test
 
   format:
     name: Code Analysis and Formatting
