@@ -92,13 +92,9 @@ jobs:
         mkdir ${HOME}/.kube
         echo ${{ secrets.KUBE_CONFIG }} | base64 --decode > ${HOME}/.kube/config
         cat ${HOME}/.kube/config
-
+        
     - name: Use context
       run: kubectl config use-context do-tor1-log680-k8s-cluster
-
-    - name: Set new image for the Deployment
-      run: |
-        kubectl set image deployment/oxygencs oxygencs-container=ddworksat/oxygencs-grp1-eq4:${GITHUB_RUN_NUMBER} -n default
-
+      
     - name: Deploy to K8s
       run: kubectl apply -f kubernetes/
